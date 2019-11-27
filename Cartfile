@@ -1,0 +1,7 @@
+github "robbiehanson/CocoaAsyncSocket"
+github "CocoaLumberjack/CocoaLumberjack"
+github "lexrus/MMDB-Swift"
+github "zhuhaow/Sodium-framework"
+github "behrang/YamlSwift"
+github "zhuhaow/tun2socks"
+github "zhuhaow/Resolver"
