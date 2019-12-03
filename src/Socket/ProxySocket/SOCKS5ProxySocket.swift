@@ -110,14 +110,13 @@ public class SOCKS5ProxySocket: ProxySocket {
             data.withUnsafeBytes { pointer in
                 let p = pointer.bindMemory(to: Int8.self)
                 
-                guard p.baseAddress!.pointee == 5 else {
-                    // TODO: notify observer
+                guard p.baseAddress!.pointee == 5 else {// TODO: notify observer
                     self.disconnect()
                     return
                 }
 
 //                guard p.baseAddress!.successor().pointee > 0 else {
-//                    // TODO: notify observer
+                // TODO: notify observer
 //                    self.disconnect()
 //                    return
 //                }
