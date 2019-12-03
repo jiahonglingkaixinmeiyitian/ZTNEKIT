@@ -1,5 +1,5 @@
 import Foundation
-
+//socks
 public class SOCKS5ProxySocket: ProxySocket {
     enum SOCKS5ProxyReadStatus: CustomStringConvertible {
         case invalid,
