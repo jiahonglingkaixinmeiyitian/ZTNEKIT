@@ -1,6 +1,12 @@
 # ZTNEKit
 
 
-## 基于NEKIT的UDP转发  
+## Carthage 编译
 
-## [NEKIT](github.com/zhuhaow/NEKit )
+```
+carthage update --no-use-binaries --platform ios
+```
+
+##
+
+- NEKit：https://github.com/zhuhaow/NEKit
