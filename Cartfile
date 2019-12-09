@@ -1,7 +1,7 @@
 github "robbiehanson/CocoaAsyncSocket"
 github "CocoaLumberjack/CocoaLumberjack"
 github "lexrus/MMDB-Swift"
-github "425589643/ZTLibsodium"
+github "425589643/Sodium-framework"
 github "behrang/YamlSwift"
 github "425589643/ZTTun2socks"
 github "425589643/ZTResolver"
