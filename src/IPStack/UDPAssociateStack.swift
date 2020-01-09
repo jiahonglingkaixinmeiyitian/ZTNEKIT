@@ -17,8 +17,8 @@ public class SOCKS5AssociateAdapter: AdapterSocket {
     let password: Data?
     var helloData: Data
     let associateData = Data([0x05, 0x03 , 0x00 , 0x01 ,
-                                0x00, 0x00, 0x00, 0x00,
-                                0x00, 0x00 ])
+                              0x00, 0x00, 0x00, 0x00,
+                              0x00, 0x00 ])
 
     public enum ReadTag: Int {
         case methodResponse = -20000, connectResponseFirstPart, connectResponseSecondPart
@@ -170,12 +170,9 @@ public class UDPAssociateStack: IPStackProtocol, NWUDPSocketDelegate {
 
     /**
      Input a packet into the stack.
-
      - note: Only process IPv4 UDP packet as of now.
-
      - parameter packet:  The IP packet.
      - parameter version: The version of the IP packet, i.e., AF_INET, AF_INET6.
-
      - returns: If the stack accepts in this packet. If the packet is accepted, then it won't be processed by other IP stacks.
      */
     public func input(packet: Data, version: NSNumber?) -> Bool {
@@ -185,11 +182,8 @@ public class UDPAssociateStack: IPStackProtocol, NWUDPSocketDelegate {
                 return false
             }
         }
-        if IPPacket.peekDestinationPort(packet) == 53 {
-            DDLogInfo("拿到了dns请求:\(IPPacket.peekDestinationAddress(packet)!)")
-//            return false
-        }
         if IPPacket.peekProtocol(packet) == .udp {
+            DDLogInfo("读取UDP包的大小:\(packet.count) 字节")
             input(packet)
             return true
         }
@@ -220,7 +214,9 @@ public class UDPAssociateStack: IPStackProtocol, NWUDPSocketDelegate {
         }
 
         if session.agent?.host == nil || session.agent?.port == nil {
-            // 将来考虑增加一个 buffer，然后在 delegate 里做重试
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                self.input(packetData)
+            }
             return
         }
 

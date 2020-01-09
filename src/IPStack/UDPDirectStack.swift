@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjackSwift
 
 struct ConnectInfo {
     let sourceAddress: IPAddress
@@ -27,12 +28,9 @@ public class UDPDirectStack: IPStackProtocol, NWUDPSocketDelegate {
     
     /**
      Input a packet into the stack.
-
      - note: Only process IPv4 UDP packet as of now.
-
      - parameter packet:  The IP packet.
      - parameter version: The version of the IP packet, i.e., AF_INET, AF_INET6.
-
      - returns: If the stack accepts in this packet. If the packet is accepted, then it won't be processed by other IP stacks.
      */
     public func input(packet: Data, version: NSNumber?) -> Bool {
@@ -43,6 +41,7 @@ public class UDPDirectStack: IPStackProtocol, NWUDPSocketDelegate {
             }
         }
         if IPPacket.peekProtocol(packet) == .udp {
+            DDLogInfo("读取UDP包的大小:\(packet.count) 字节")
             input(packet)
             return true
         }

@@ -17,7 +17,6 @@ public class NWTCPSocket: NSObject, RawTCPSocketProtocol {
     private var readDataPrefix: Data?
 
     // MARK: RawTCPSocketProtocol implementation
-
     /// The `RawTCPSocketDelegate` instance.
     weak open var delegate: RawTCPSocketDelegate?
 
@@ -87,7 +86,6 @@ public class NWTCPSocket: NSObject, RawTCPSocketProtocol {
      */
     public func disconnect() {
         cancelled = true
-
         if connection == nil  || connection!.state == .cancelled {
             delegate?.didDisconnectWith(socket: self)
         } else {
@@ -142,16 +140,12 @@ public class NWTCPSocket: NSObject, RawTCPSocketProtocol {
 
         connection!.readMinimumLength(1, maximumLength: Opt.MAXNWTCPSocketReadDataSize) { data, error in
             guard error == nil else {
-                let err = error! as NSError
-                if err.code==57 {
-                    self.queueCall {
-                        self.disconnect()
-                    }
+//                DDLogError("NWTCPSocket got an error when reading data: \(String(describing: error))")
+                self.queueCall {
+                    self.disconnect()
                 }
-                DDLogError("NWTCPSocket got an error when reading data: \(String(describing: error))")
                 return
             }
-
             self.readCallback(data: data)
         }
     }
@@ -169,7 +163,7 @@ public class NWTCPSocket: NSObject, RawTCPSocketProtocol {
 
         connection!.readLength(length) { data, error in
             guard error == nil else {
-                DDLogError("NWTCPSocket got an error when reading data: \(String(describing: error))")
+//                DDLogError("NWTCPSocket got an error when reading data: \(String(describing: error))")
                 self.queueCall {
                     self.disconnect()
                 }
@@ -251,7 +245,7 @@ public class NWTCPSocket: NSObject, RawTCPSocketProtocol {
 
         queueCall {
             guard let data = self.consumeReadData(data) else {
-                // remote read is closed, but this is okay, nothing need to be done, if this socket is read again, then error occurs.
+                // 远程读取已关闭，但这没关系，无需执行任何操作，如果再次读取此套接字，则会发生错误。
                 return
             }
 
@@ -272,9 +266,6 @@ public class NWTCPSocket: NSObject, RawTCPSocketProtocol {
                 self.readDataPrefix = rest
                 self.delegate?.didRead(data: matchData, from: self)
             } else {
-                let add = String(format: "%u", self.connection!)
-                DDLogInfo("读取的线程：\(Thread.current)\ntcp的内存地址：\(add)")
-                DDLogInfo("读取包的大小:\(data.count) 字节")
                 self.delegate?.didRead(data: data, from: self)
             }
         }
@@ -282,8 +273,6 @@ public class NWTCPSocket: NSObject, RawTCPSocketProtocol {
 
     private func send(data: Data) {
         writePending = true
-//        let add = String(format: "%u", connection!)
-//        DDLogInfo("发送的线程：\(Thread.current)\ntcp的内存地址：\(add)")
         self.connection!.write(data) { error in
             self.queueCall {
                 self.writePending = false
@@ -293,7 +282,6 @@ public class NWTCPSocket: NSObject, RawTCPSocketProtocol {
                     self.disconnect()
                     return
                 }
-
                 self.delegate?.didWrite(data: data, by: self)
                 self.checkStatus()
             }

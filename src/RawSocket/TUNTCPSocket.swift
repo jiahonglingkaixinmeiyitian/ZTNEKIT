@@ -17,7 +17,6 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
 
     /**
      Initailize an instance with `TSTCPSocket`.
-
      - parameter socket: The socket object to work with.
      */
     public init(socket: TSTCPSocket) {
@@ -26,7 +25,6 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
     }
 
     // MARK: RawTCPSocketProtocol implementation
-
     /// The `RawTCPSocketDelegate` instance.
     public weak var delegate: RawTCPSocketDelegate?
 
@@ -67,7 +65,6 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
 
     /**
      Disconnect the socket.
-
      The socket will disconnect elegantly after any queued writing data are successfully sent.
      */
     public func disconnect() {
@@ -92,7 +89,6 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
 
     /**
      Send data to local.
-
      - parameter data: Data to send.
      - warning: This should only be called after the last write is finished, i.e., `delegate?.didWriteData()` is called.
      */
@@ -103,7 +99,6 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
 
     /**
      Read data from the socket.
-
      - warning: This should only be called after the last read is finished, i.e., `delegate?.didReadData()` is called.
      */
     public func readData() {
@@ -113,7 +108,6 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
 
     /**
      Read specific length of data from the socket.
-
      - parameter length: The length of the data to read.
      - warning: This should only be called after the last read is finished, i.e., `delegate?.didReadData()` is called.
      */
@@ -125,7 +119,6 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
 
     /**
      Read data until a specific pattern (including the pattern).
-
      - parameter data: The pattern.
      - warning: This should only be called after the last read is finished, i.e., `delegate?.didReadData()` is called.
      */
@@ -135,7 +128,6 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
 
     /**
      Read data until a specific pattern (including the pattern).
-
      - parameter data: The pattern.
      - parameter maxLength: Ignored since `GCDAsyncSocket` does not support this. The max length of data to scan for the pattern.
      - warning: This should only be called after the last read is finished, i.e., `delegate?.didReadData()` is called.
@@ -154,7 +146,10 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
         if pendingReadData.count > 0 {
             queueCall {
                 guard self.reading else {
-                    // no queued read request
+                    if self.destinationPort==Port(port: 8080) {
+                        self.delegate?.didRead(data: self.pendingReadData, from: self)
+                        self.pendingReadData = Data()
+                    }
                     return
                 }
 
@@ -223,6 +218,7 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
     open func didReadData(_ data: Data, from: TSTCPSocket) {
         queueCall {
             self.pendingReadData.append(data)
+//            self.reading = true
             self.checkReadData()
         }
     }
@@ -231,7 +227,6 @@ public class TUNTCPSocket: RawTCPSocketProtocol, TSTCPSocketDelegate {
         queueCall {
             self.remainWriteLength -= length
             if self.remainWriteLength <= 0 {
-
                 self.delegate?.didWrite(data: nil, by: self)
                 self.checkStatus()
             }
