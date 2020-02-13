@@ -219,7 +219,6 @@
 		36C4B7D31D6C508100F2BDCD /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C4B7CA1D6C508100F2BDCD /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		36C4B7D41D6C508100F2BDCD /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C4B7CB1D6C508100F2BDCD /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		36C4B7D61D6C508100F2BDCD /* lwip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C4B7CD1D6C508100F2BDCD /* lwip.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		36C4B7D71D6C508100F2BDCD /* MMDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C4B7CE1D6C508100F2BDCD /* MMDB.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		36C4B7D81D6C508100F2BDCD /* Sodium.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C4B7CF1D6C508100F2BDCD /* Sodium.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		36C4B7D91D6C508100F2BDCD /* tun2socks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C4B7D01D6C508100F2BDCD /* tun2socks.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		36C4B7DA1D6C508100F2BDCD /* Yaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C4B7D11D6C508100F2BDCD /* Yaml.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -624,7 +623,6 @@
 				36C4B7D31D6C508100F2BDCD /* CocoaLumberjack.framework in Frameworks */,
 				36C4B7D41D6C508100F2BDCD /* CocoaLumberjackSwift.framework in Frameworks */,
 				36C4B7D61D6C508100F2BDCD /* lwip.framework in Frameworks */,
-				36C4B7D71D6C508100F2BDCD /* MMDB.framework in Frameworks */,
 				36C4B7D81D6C508100F2BDCD /* Sodium.framework in Frameworks */,
 				36C4B7D91D6C508100F2BDCD /* tun2socks.framework in Frameworks */,
 				36C4B7DA1D6C508100F2BDCD /* Yaml.framework in Frameworks */,
@@ -2005,7 +2003,6 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					MMDB_UINT128_IS_BYTE_ARRAY,
 					"DEBUG=1",
 					"$(inherited)",
 				);
@@ -2038,7 +2035,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				GCC_PREPROCESSOR_DEFINITIONS = MMDB_UINT128_IS_BYTE_ARRAY;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				INFOPLIST_FILE = "NEKit-iOS/Info.plist";

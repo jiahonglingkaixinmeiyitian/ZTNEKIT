@@ -82,10 +82,10 @@ public struct Utils {
 
         static func Lookup(_ ipAddress: String) -> String? {
             if Utils.IP.isIP(ipAddress) {
-                guard let result = GeoIP.LookUp(ipAddress) else {
-                    return "--"
-                }
-                return result.isoCode
+//                guard let result = GeoIP.LookUp(ipAddress) else {
+//                    return "--"
+//                }
+                return "--"
             } else {
                 return nil
             }
