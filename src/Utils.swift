@@ -85,7 +85,7 @@ public struct Utils {
 //                guard let result = GeoIP.LookUp(ipAddress) else {
 //                    return "--"
 //                }
-                return "--"
+                return nil
             } else {
                 return nil
             }
