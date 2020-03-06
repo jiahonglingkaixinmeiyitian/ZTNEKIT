@@ -36,67 +36,6 @@ extension ShadowsocksAdapter {
             func output(data: Data) {}
             func input(data: Data) throws {}
         }
-        
-        public class Ox06OriginStreamObfuscater: StreamObfuscaterBase {
-            public class Factory: StreamObfuscater.Factory {
-                public override init() {}
-                
-                public  init(strPre: String) {
-                    prefix0x06 = strPre
-                }
-                
-                private  var prefix0x06: String!
-                
-                public override func build(for session: ConnectSession) -> ShadowsocksAdapter.StreamObfuscater.StreamObfuscaterBase {
-                    let obf =  Ox06OriginStreamObfuscater(for: session)
-                    obf.prefix0x06 = prefix0x06
-                    return obf
-                }
-            }
-            
-            private  var prefix0x06: String!
-            private var requestSend = false
-            
-            private func requestData(withData data: Data) -> Data {
-                let preLength = prefix0x06.utf8.count
-                let prePlayloadLength = 1 + 2 + preLength
-                var prePlayload = Data(count: prePlayloadLength)
-                prePlayload[0] = 6
-                var tmpPrePlayLoadLength = UInt16(preLength)
-                withUnsafeBytes(of: &tmpPrePlayLoadLength) {
-                    prePlayload.replaceSubrange(1..<1+2 , with: $0)
-                }
-                if preLength > 0{
-                    prePlayload.replaceSubrange(3..<3+preLength, with: prefix0x06.data(using: String.Encoding.utf8)!)
-                }
-
-                let hostLength = session.host.utf8.count
-                let length = 1 + 1 + hostLength + 2 + data.count
-                var response = Data(count: length)
-                response[0] = 3
-                response[1] = UInt8(hostLength)
-                response.replaceSubrange(2..<2+hostLength, with: session.host.utf8)
-                var beport = UInt16(session.port).bigEndian
-                withUnsafeBytes(of: &beport) {
-                    response.replaceSubrange(2+hostLength..<4+hostLength, with: $0)
-                }
-                response.replaceSubrange(4+hostLength..<length, with: data)
-                return prePlayload + response
-            }
-            
-            public override func input(data: Data) throws {
-                inputStreamProcessor!.input(data: data)
-            }
-            
-            public override func output(data: Data) {
-                if requestSend {
-                    return outputStreamProcessor!.output(data: data)
-                } else {
-                    requestSend = true
-                    return outputStreamProcessor!.output(data: requestData(withData: data))
-                }
-            }
-        }
 
         public class OriginStreamObfuscater: StreamObfuscaterBase {
             public class Factory: StreamObfuscater.Factory {
