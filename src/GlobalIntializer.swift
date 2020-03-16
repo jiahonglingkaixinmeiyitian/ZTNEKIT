@@ -7,6 +7,7 @@ struct GlobalIntializer {
         return true
     }()
 
+    
     static func initalize() {
         _ = _initialized
     }
