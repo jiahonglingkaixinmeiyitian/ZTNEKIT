@@ -71,7 +71,7 @@ public class NWUDPSocket: NSObject {
                 sSelf.updateActivityTimer()
                 
                 guard error == nil, let dataArray = dataArray else {
-//                    DDLogError("Error when reading from remote server. \(error?.localizedDescription ?? "Connection reset")")
+                    DDLogError("Error when reading from remote server. \(error?.localizedDescription ?? "Connection reset")")
                     return
                 }
                 
@@ -88,8 +88,10 @@ public class NWUDPSocket: NSObject {
      - parameter data: The data to send.
      */
     public func write(data: Data) {
-        pendingWriteData.append(data)
-        checkWrite()
+        queueCall {
+            self.pendingWriteData.append(data)
+            self.checkWrite()
+        }
     }
     
     public func disconnect() {

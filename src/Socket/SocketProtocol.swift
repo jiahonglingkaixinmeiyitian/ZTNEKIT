@@ -1,16 +1,7 @@
 import Foundation
 
-/**socks5的账号密码*/
-public class socks5Auth: NSObject {
-    public var host: String!
-    public var port: Int!
-    public var username: String!
-    public var password: String!
-}
-
 /**
  The current connection status of the socket.
-
  - Invalid:       The socket is just created but never connects.
  - Connecting:    The socket is connecting.
  - Established:   The connection is established.
@@ -49,7 +40,6 @@ public protocol SocketProtocol: class {
 
 //    /// The description of the currect status.
 //    var statusDescription: String { get }
-
     /// If the socket is disconnected.
     var isDisconnected: Bool { get }
 
@@ -62,14 +52,12 @@ public protocol SocketProtocol: class {
 
     /**
      Read data from the socket.
-
      - warning: This should only be called after the last read is finished, i.e., `delegate?.didReadData()` is called.
      */
     func readData()
 
     /**
      Send data to remote.
-
      - parameter data: Data to send.
      - warning: This should only be called after the last write is finished, i.e., `delegate?.didWriteData()` is called.
      */
@@ -109,23 +97,19 @@ extension SocketProtocol {
 public protocol SocketDelegate : class {
     /**
      The socket did connect to remote.
-
      - parameter adapterSocket: The connected socket.
      */
     func didConnectWith(adapterSocket: AdapterSocket)
 
     /**
      The socket did disconnect.
-
      This should only be called once in the entire lifetime of a socket. After this is called, the delegate will not receive any other events from that socket and the socket should be released.
-
      - parameter socket: The socket which did disconnect.
      */
     func didDisconnectWith(socket: SocketProtocol)
 
     /**
      The socket did read some data.
-
      - parameter data:    The data read from the socket.
      - parameter from:    The socket where the data is read from.
      */
@@ -133,7 +117,6 @@ public protocol SocketDelegate : class {
 
     /**
      The socket did send some data.
-
      - parameter data:    The data which have been sent to remote (acknowledged). Note this may not be available since the data may be released to save memory.
      - parameter by:      The socket where the data is sent out.
      */
@@ -141,14 +124,12 @@ public protocol SocketDelegate : class {
 
     /**
      The socket is ready to forward data back and forth.
-
      - parameter socket: The socket which becomes ready to forward data.
      */
     func didBecomeReadyToForwardWith(socket: SocketProtocol)
 
     /**
      Did receive a `ConnectSession` from local now it is time to connect to remote.
-
      - parameter session: The received `ConnectSession`.
      - parameter from:    The socket where the `ConnectSession` is received.
      */
@@ -156,7 +137,6 @@ public protocol SocketDelegate : class {
 
     /**
      The adapter socket decided to replace itself with a new `AdapterSocket` to connect to remote.
-
      - parameter newAdapter: The new `AdapterSocket` to replace the old one.
      */
     func updateAdapterWith(newAdapter: AdapterSocket)

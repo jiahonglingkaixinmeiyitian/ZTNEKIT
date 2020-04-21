@@ -1,5 +1,6 @@
+  
 import Foundation
-//socks
+
 public class SOCKS5ProxySocket: ProxySocket {
     enum SOCKS5ProxyReadStatus: CustomStringConvertible {
         case invalid,
@@ -110,23 +111,20 @@ public class SOCKS5ProxySocket: ProxySocket {
             data.withUnsafeBytes { pointer in
                 let p = pointer.bindMemory(to: Int8.self)
                 
-                guard p.baseAddress!.pointee == 5 else {// TODO: notify observer
+                guard p.baseAddress!.pointee == 5 else {
                     self.disconnect()
                     return
                 }
 
-//                guard p.baseAddress!.successor().pointee > 0 else {
-                // TODO: notify observer
-//                    self.disconnect()
-//                    return
-//                }
+                guard p.baseAddress!.successor().pointee > 0 else {
+                    self.disconnect()
+                    return
+                }
 
                 self.readStatus = .readingMethods
                 self.socket.readDataTo(length: Int(p.baseAddress!.successor().pointee))
             }
         case .readingMethods:
-            // TODO: check for 0x00 in read data
-
             let response = Data([0x05, 0x00])
             // we would not be able to read anything before the data is written out, so no need to handle the dataWrote event.
             write(data: response)
@@ -137,7 +135,6 @@ public class SOCKS5ProxySocket: ProxySocket {
                 let p = pointer.bindMemory(to: Int8.self)
                 
                 guard p.baseAddress!.pointee == 5 && p.baseAddress!.successor().pointee == 1 else {
-                    // TODO: notify observer
                     self.disconnect()
                     return
                 }
