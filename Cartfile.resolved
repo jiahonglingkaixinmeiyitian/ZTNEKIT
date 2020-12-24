@@ -1,5 +1,5 @@
-github "425589643/ZTResolver" "1.0"
-github "425589643/ZTTun2socks" "1.0"
+github "wanyuan2020/ZTResolver" "1.0"
+github "wanyuan2020/ZTTun2socks" "1.0"
 github "CocoaLumberjack/CocoaLumberjack" "3.6.1"
 github "Quick/Nimble" "v8.0.1"
 github "Quick/Quick" "v2.0.0"
